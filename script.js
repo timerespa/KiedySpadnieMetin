@@ -23,20 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateTimer() {
-        const now = new Date();
-        const timeDiff = nextRespTime - now;
+    const now = new Date();
+    const timeDiff = nextRespTime - now;
 
-        if (timeDiff <= 0) {
-            nextRespTime = calculateNextRespTime();
-        }
+    if (timeDiff <= 0) {
+        nextRespTime = calculateNextRespTime();
+    }
 
-        const hours = String(Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-        const minutes = String(Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        const seconds = String(Math.floor((timeDiff % (1000 * 60)) / 1000)).padStart(2, '0');
+    const hours = String(Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
+    const minutes = String(Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
+    const seconds = String(Math.floor((timeDiff % (1000 * 60)) / 1000)).padStart(2, '0');
 
-        timerElement.textContent = `${hours}:${minutes}:${seconds}`;
-        nextRespElement.textContent = `Następny resp: ${nextRespTime.toLocaleTimeString('pl-PL')}`;
+    timerElement.textContent = `${hours}:${minutes}:${seconds}`;
+    nextRespElement.textContent = `Następny resp: ${nextRespTime.toLocaleTimeString('pl-PL')}`;
 
+    // Automatyczne odświeżenie listy respów
+    if (respListElement.style.display === 'block') {
         generateRespList();
     }
 
