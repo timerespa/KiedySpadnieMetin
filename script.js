@@ -1,4 +1,4 @@
-const initialRespTime = '17:18:35'; // Początkowa godzina pierwszego respa
+const initialRespTime = '17:13:35'; // Początkowa godzina pierwszego respa
 const respInterval = 3750; // Czas między respami (1h 2m 30s)
 const respCount = 12; // Ilość wyświetlanych przyszłych respów
 
