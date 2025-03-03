@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const respList = document.getElementById("respList");
     const toggleListButton = document.getElementById("toggleList");
 
-    // Pierwszy resp ustawiony na 19:18:35
+    // Konfiguracja początkowego czasu pierwszego respa
     let baseTime = new Date();
-    baseTime.setHours(19, 18, 35, 0); 
+    baseTime.setHours(19, 18, 35, 0); // Ustawienie startowej godziny
 
     const interval = 3750 * 1000; // 1h 2m 30s w milisekundach
 
@@ -49,5 +49,13 @@ document.addEventListener("DOMContentLoaded", function () {
             respList.appendChild(listItem);
         }
 
-        let firstResp = new Date(nextResp.getTime());
-        nextRespElement.text
+        nextRespElement.textContent = nextResp.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }
+
+    toggleListButton.addEventListener("click", function () {
+        respList.classList.toggle("hidden");
+    });
+
+    updateRespList();
+    setInterval(updateTimer, 1000);
+});
