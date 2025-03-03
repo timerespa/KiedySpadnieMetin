@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Konfiguracja początkowego czasu pierwszego respa
     let baseTime = new Date();
-    baseTime.setHours(19, 18, 35, 0); // Ustawienie startowej godziny
+    baseTime.setHours(18, 18, 35, 0); // Ustawienie startowej godziny
 
     const interval = 3750 * 1000; // 1h 2m 30s w milisekundach
 
