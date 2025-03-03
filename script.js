@@ -4,10 +4,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const respList = document.getElementById("respList");
     const toggleListButton = document.getElementById("toggleList");
 
-    // Ustawienie początkowego czasu respa
+    // Pierwszy resp ustawiony na 19:18:35
     let baseTime = new Date();
-    baseTime.setHours(14, 0, 0, 0); // Ustal godzinę początkową (np. 14:00:00)
-    const interval = 3750 * 1000; // 1h 2min 30s w milisekundach
+    baseTime.setHours(19, 18, 35, 0); 
+
+    const interval = 3750 * 1000; // 1h 2m 30s w milisekundach
 
     function getNextRespTime() {
         let now = new Date();
@@ -31,32 +32,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
         timerElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
 
-        if (timeDiff <= 0) {
+        if (timeDiff <= 1000) {
             updateRespList();
         }
     }
 
     function updateRespList() {
         respList.innerHTML = "";
-        let nextResp = getNextRespTime(18:18:35
-            );
+        let nextResp = getNextRespTime();
 
-        for (let i = 0; i < 12; i++) {
-            let respTime = new Date(nextResp.getTime() + i * interval);
+        for (let i = 1; i <= 12; i++) {
+            let respTime = new Date(nextResp.getTime() + (i - 1) * interval);
             let formattedTime = respTime.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
             let listItem = document.createElement("li");
             listItem.textContent = formattedTime;
             respList.appendChild(listItem);
         }
 
-        let firstResp = new Date(nextResp.getTime() + interval);
-        nextRespElement.textContent = firstResp.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    }
-
-    toggleListButton.addEventListener("click", function () {
-        respList.classList.toggle("hidden");
-    });
-
-    updateRespList();
-    setInterval(updateTimer, 1000);
-});
+        let firstResp = new Date(nextResp.getTime());
+        nextRespElement.text
