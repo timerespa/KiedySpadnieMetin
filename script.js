@@ -1,64 +1,62 @@
-const initialRespTime = '17:16:05'; // Początkowa godzina pierwszego respa
-const respInterval = 3750; // Czas między respami (1h 2m 30s)
-const respCount = 12; // Ilość wyświetlanych przyszłych respów
+document.addEventListener("DOMContentLoaded", function () {
+    const timerElement = document.getElementById("timer");
+    const nextRespElement = document.getElementById("nextResp");
+    const respList = document.getElementById("respList");
+    const toggleListButton = document.getElementById("toggleList");
 
-document.addEventListener('DOMContentLoaded', () => {
-    const timerElement = document.getElementById('timer');
-    const nextRespElement = document.getElementById('next-resp');
-    const respListElement = document.getElementById('resp-list');
-    const toggleRespListButton = document.getElementById('toggle-resp-list');
+    // Ustawienie początkowego czasu respa
+    let baseTime = new Date();
+    baseTime.setHours(14, 0, 0, 0); // Ustal godzinę początkową (np. 14:00:00)
+    const interval = 3750 * 1000; // 1h 2min 30s w milisekundach
 
-    let nextRespTime = calculateNextRespTime();
+    function getNextRespTime() {
+        let now = new Date();
+        let nextResp = new Date(baseTime.getTime());
 
-    function calculateNextRespTime() {
-        const now = new Date();
-        const [hours, minutes, seconds] = initialRespTime.split(':').map(Number);
-        let respTime = new Date(now);
-        respTime.setHours(hours, minutes, seconds, 0);
-
-        while (respTime <= now) {
-            respTime = new Date(respTime.getTime() + respInterval * 1000);
+        while (nextResp <= now) {
+            nextResp = new Date(nextResp.getTime() + interval);
         }
 
-        return respTime;
+        return nextResp;
     }
 
     function updateTimer() {
-        const now = new Date();
-        const timeDiff = nextRespTime - now;
+        let nextResp = getNextRespTime();
+        let now = new Date();
+        let timeDiff = nextResp - now;
+
+        let hours = Math.floor(timeDiff / (1000 * 60 * 60));
+        let minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+
+        timerElement.textContent = `${hours}h ${minutes}m ${seconds}s`;
 
         if (timeDiff <= 0) {
-            nextRespTime = calculateNextRespTime();
-            generateRespList(); // Automatyczna aktualizacja listy po każdym respie
-        }
-
-        const hours = String(Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))).padStart(2, '0');
-        const minutes = String(Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60))).padStart(2, '0');
-        const seconds = String(Math.floor((timeDiff % (1000 * 60)) / 1000)).padStart(2, '0');
-
-        timerElement.textContent = `${hours}:${minutes}:${seconds}`;
-        nextRespElement.textContent = `Następny resp: ${nextRespTime.toLocaleTimeString('pl-PL')}`;
-    }
-
-    function generateRespList() {
-        respListElement.innerHTML = ''; // Czyścimy starą listę
-        let respTime = new Date(nextRespTime.getTime() + respInterval * 1000); // Zaczynamy od następnego respa
-
-        for (let i = 0; i < respCount; i++) {
-            const listItem = document.createElement('li');
-            listItem.textContent = respTime.toLocaleTimeString('pl-PL');
-            respListElement.appendChild(listItem);
-            respTime = new Date(respTime.getTime() + respInterval * 1000);
+            updateRespList();
         }
     }
 
-    toggleRespListButton.addEventListener('click', () => {
-        respListElement.classList.toggle('hidden');
-        if (!respListElement.classList.contains('hidden')) {
-            generateRespList();
+    function updateRespList() {
+        respList.innerHTML = "";
+        let nextResp = getNextRespTime(18:18:35
+            );
+
+        for (let i = 0; i < 12; i++) {
+            let respTime = new Date(nextResp.getTime() + i * interval);
+            let formattedTime = respTime.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+            let listItem = document.createElement("li");
+            listItem.textContent = formattedTime;
+            respList.appendChild(listItem);
         }
+
+        let firstResp = new Date(nextResp.getTime() + interval);
+        nextRespElement.textContent = firstResp.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }
+
+    toggleListButton.addEventListener("click", function () {
+        respList.classList.toggle("hidden");
     });
 
+    updateRespList();
     setInterval(updateTimer, 1000);
-    updateTimer();
 });
