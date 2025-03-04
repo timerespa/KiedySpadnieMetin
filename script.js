@@ -4,21 +4,34 @@ document.addEventListener("DOMContentLoaded", function () {
     const respList = document.getElementById("respList");
     const toggleListButton = document.getElementById("toggleList");
 
-    // Nowa konfiguracja początkowego czasu pierwszego respa
-    let baseTime = new Date();
-    baseTime.setHours(02, 00, 55, 0); // Poprawiona startowa godzina
+    // Konfigurowalny czas początkowy
+    const initialHour = 22;
+    const initialMinute = 55;
+    const initialSecond = 55;
 
     const interval = 3750 * 1000; // 1h 2m 30s w milisekundach
 
-    function getNextRespTime() {
+    function getLastRespTime() {
         let now = new Date();
-        let nextResp = new Date(baseTime.getTime());
-
-        while (nextResp <= now) {
-            nextResp = new Date(nextResp.getTime() + interval);
+        let baseTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), initialHour, initialMinute, initialSecond);
+        
+        if (baseTime > now) {
+            // Jeśli jeszcze nie było pierwszego respa dzisiaj, szukamy wczorajszego
+            baseTime.setDate(baseTime.getDate() - 1);
         }
 
-        return nextResp;
+        let lastResp = new Date(baseTime.getTime());
+
+        while (lastResp <= now) {
+            lastResp = new Date(lastResp.getTime() + interval);
+        }
+
+        return new Date(lastResp.getTime() - interval); // Poprzedni resp (ten, który faktycznie był ostatni)
+    }
+
+    function getNextRespTime() {
+        let lastResp = getLastRespTime();
+        return new Date(lastResp.getTime() + interval);
     }
 
     function updateTimer() {
@@ -40,10 +53,9 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateRespList() {
         respList.innerHTML = "";
         let nextResp = getNextRespTime();
-        let nextAfterThis = new Date(nextResp.getTime() + interval); // Pominięcie odliczanego respa
 
         for (let i = 0; i < 12; i++) {
-            let respTime = new Date(nextAfterThis.getTime() + i * interval);
+            let respTime = new Date(nextResp.getTime() + i * interval);
             let formattedTime = respTime.toLocaleTimeString("pl-PL", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
             let listItem = document.createElement("li");
             listItem.textContent = formattedTime;
