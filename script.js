@@ -4,9 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const respList = document.getElementById("respList");
     const toggleListButton = document.getElementById("toggleList");
 
-    // Konfigurowalny czas początkowy
-    const initialHour = 22;
-    const initialMinute = 55;
+    // Ustawienie pierwszego czasu respa
+    const initialHour = 2;
+    const initialMinute = 0;
     const initialSecond = 55;
 
     const interval = 3750 * 1000; // 1h 2m 30s w milisekundach
@@ -15,18 +15,19 @@ document.addEventListener("DOMContentLoaded", function () {
         let now = new Date();
         let baseTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), initialHour, initialMinute, initialSecond);
         
+        // Jeśli jest przed pierwszym respem danego dnia, szukamy ostatni resp z poprzedniego dnia
         if (baseTime > now) {
-            // Jeśli jeszcze nie było pierwszego respa dzisiaj, szukamy wczorajszego
             baseTime.setDate(baseTime.getDate() - 1);
         }
 
         let lastResp = new Date(baseTime.getTime());
 
+        // Liczymy kolejne respy do momentu, aż znajdziemy ostatni poprawny przed teraz
         while (lastResp <= now) {
             lastResp = new Date(lastResp.getTime() + interval);
         }
 
-        return new Date(lastResp.getTime() - interval); // Poprzedni resp (ten, który faktycznie był ostatni)
+        return new Date(lastResp.getTime() - interval); // Poprzedni faktyczny resp
     }
 
     function getNextRespTime() {
