@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const toggleListButton = document.getElementById("toggleList");
 
     // Ustawienie pierwszego czasu respa
-    const initialHour = 2;
-    const initialMinute = 0;
-    const initialSecond = 55;
+    const initialHour = 12;
+    const initialMinute = 50;
+    const initialSecond = 05;
 
     const interval = 3750 * 1000; // 1h 2m 30s w milisekundach
 
