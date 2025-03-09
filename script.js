@@ -6,8 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Ustawienie pierwszego czasu respa
     const initialHour = 12;
-    const initialMinute = 42; 
-    const initialSecond = 25;
+    const initialMinute = 00; 
+    const initialSecond = 00;
 
     const interval = 3750 * 1000; // 1h 2m 30s w milisekundach
 
